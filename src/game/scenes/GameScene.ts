@@ -103,13 +103,18 @@ export default class GameScene extends Phaser.Scene {
 
     // Camera
     this.cameras.main.setBounds(0, 0, 4000, window.innerHeight);
+    this.cameras.main.setZoom(0.7);
     this.cameras.main.startFollow(this.player, true, 0.05, 0.05);
-    this.cameras.main.setDeadzone(100, 100);
+
+    this.scale.on('resize', (gameSize: Phaser.Structs.Size) => {
+        this.cameras.main.setSize(gameSize.width, gameSize.height);
+        this.physics.world.setBounds(0, 0, 4000, gameSize.height);
+    });
   }
 
   update() {
     if (this.isEnding) return;
-
+    
     let left = this.cursors?.left.isDown || this.wasd?.left.isDown;
     let right = this.cursors?.right.isDown || this.wasd?.right.isDown;
     let up = this.cursors?.up.isDown || this.wasd?.up.isDown || this.cursors?.space.isDown;
