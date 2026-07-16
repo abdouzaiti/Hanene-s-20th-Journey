@@ -1,6 +1,20 @@
 import { Howl } from 'howler';
 
 let applause: Howl | null = null;
+let audioCtx: AudioContext | null = null;
+
+const getAudioContext = () => {
+  if (!audioCtx) {
+    const AudioContextClass = (window as any).AudioContext || (window as any).webkitAudioContext;
+    if (AudioContextClass) {
+      audioCtx = new AudioContextClass();
+    }
+  }
+  if (audioCtx && audioCtx.state === 'suspended') {
+    audioCtx.resume();
+  }
+  return audioCtx;
+};
 
 export const playSound = (type: 'jump' | 'collect' | 'win') => {
   try {
@@ -16,10 +30,9 @@ export const playSound = (type: 'jump' | 'collect' | 'win') => {
       return;
     }
 
-    const AudioContext = window.AudioContext || (window as any).webkitAudioContext;
-    if (!AudioContext) return;
+    const ctx = getAudioContext();
+    if (!ctx) return;
     
-    const ctx = new AudioContext();
     const osc = ctx.createOscillator();
     const gain = ctx.createGain();
     

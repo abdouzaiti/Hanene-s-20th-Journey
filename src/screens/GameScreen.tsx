@@ -66,8 +66,8 @@ export default function GameScreen() {
         </div>
       </div>
 
-      <div className="absolute bottom-10 w-full text-center pointer-events-none z-10 md:hidden opacity-50 font-sans text-pink-600 font-medium">
-        <p>Left side: Left | Middle: Right | Right side: Jump</p>
+      <div className="absolute bottom-0 w-full h-24 bg-amber-900 z-10 md:hidden flex justify-center items-center">
+        <p className="font-sans text-white font-medium">Left side: Left | Middle: Right | Right side: Jump</p>
       </div>
 
       <AnimatePresence>
