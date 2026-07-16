@@ -1,0 +1,6 @@
+{
+  "name": "Hanene's 20th Journey",
+  "description": "A premium interactive birthday web application made exclusively for Hanene.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
