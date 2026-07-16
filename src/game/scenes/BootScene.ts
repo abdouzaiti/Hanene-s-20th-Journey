@@ -11,6 +11,8 @@ export default class BootScene extends Phaser.Scene {
     this.load.image('jumping', '/jumping.png');
     this.load.image('abdou', '/abdou.png');
     this.load.image('happyabdou', '/happyabdou.png');
+    this.load.image('finish1', '/finish1.png');
+    this.load.image('finish2', '/finish2.png');
     // Generate placeholder assets since we don't have real files
     if (!this.textures.exists('cake')) this.generateCakeTexture();
     if (!this.textures.exists('cloud')) this.generateCloudTexture();

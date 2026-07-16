@@ -54,7 +54,7 @@ export default class GameScene extends Phaser.Scene {
     
     // Abdou
     this.abdou = this.add.image(3800, window.innerHeight - 80, 'abdou');
-    this.abdou.setScale(0.2);
+    this.abdou.setScale(0.13);
     
     // Scale down the NPC
     this.player.setScale(0.15); // Adjust this value to make it smaller or larger as needed
@@ -220,13 +220,54 @@ export default class GameScene extends Phaser.Scene {
   private triggerEnding() {
     this.isEnding = true;
     this.player.setVelocityX(0);
-    this.abdou.setTexture('happyabdou');
-    playSound('win');
-    
-    // Slow Zoom
-    this.cameras.main.zoomTo(2, 3000);
-    this.cameras.main.pan(this.player.x, this.player.y - 50, 3000);
+    this.player.setTexture('running');
 
+    // Walk to Abdou
+    this.tweens.add({
+      targets: this.player,
+      x: this.abdou.x - 60,
+      duration: 1500,
+      onComplete: () => {
+        this.player.setTexture('standing');
+        this.player.setFlipX(false);
+        this.abdou.setTexture('happyabdou');
+        
+        // After 1s, show finish1
+        setTimeout(() => {
+          this.abdou.setTexture('finish1');
+          this.player.setVisible(false);
+          
+          // Wait 2s, then turn to finish2
+          setTimeout(() => {
+            this.abdou.setTexture('finish2');
+            
+            // Wait 1s, then turn back to finish1
+            setTimeout(() => {
+              this.abdou.setTexture('finish1');
+              
+              // Wait 1s, then turn back to finish2
+              setTimeout(() => {
+                this.abdou.setTexture('finish2');
+                
+                // Camera Zoom & Pan to Abdou
+                this.cameras.main.pan(this.abdou.x + 50, this.abdou.y, 1000);
+                this.cameras.main.zoomTo(3, 1000); // Zoom in significantly
+                
+                // Wait 3s then win
+                setTimeout(() => {
+                    this.finishGame();
+                }, 3000);
+              }, 1000); // 1s delay
+            }, 1000); // 1s delay
+          }, 2000); // 2s delay
+        }, 1000); // 1s delay
+      }
+    });
+
+    playSound('win');
+  }
+
+  private finishGame() {
     // Massive Confetti
     const endConfetti = setInterval(() => {
       confetti({

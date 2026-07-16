@@ -4,6 +4,9 @@ let applause: Howl | null = null;
 let audioCtx: AudioContext | null = null;
 
 const getAudioContext = () => {
+  if (audioCtx && audioCtx.state === 'closed') {
+    audioCtx = null;
+  }
   if (!audioCtx) {
     const AudioContextClass = (window as any).AudioContext || (window as any).webkitAudioContext;
     if (AudioContextClass) {
