@@ -5,6 +5,7 @@ import { playSound } from '../../lib/sounds';
 
 export default class GameScene extends Phaser.Scene {
   private player!: Phaser.Physics.Arcade.Sprite;
+  private abdou!: Phaser.GameObjects.Image;
   private cursors!: Phaser.Types.Input.Keyboard.CursorKeys;
   private wasd!: any;
   private cakes!: Phaser.Physics.Arcade.Group;
@@ -50,6 +51,10 @@ export default class GameScene extends Phaser.Scene {
 
     // Player
     this.player = this.physics.add.sprite(100, window.innerHeight - 100, 'standing');
+    
+    // Abdou
+    this.abdou = this.add.image(3800, window.innerHeight - 80, 'abdou');
+    this.abdou.setScale(0.2);
     
     // Scale down the NPC
     this.player.setScale(0.15); // Adjust this value to make it smaller or larger as needed
@@ -210,6 +215,7 @@ export default class GameScene extends Phaser.Scene {
   private triggerEnding() {
     this.isEnding = true;
     this.player.setVelocityX(0);
+    this.abdou.setTexture('happyabdou');
     playSound('win');
     
     // Slow Zoom
