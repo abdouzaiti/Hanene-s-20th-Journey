@@ -49,7 +49,10 @@ export default class GameScene extends Phaser.Scene {
     }
 
     // Player
-    this.player = this.physics.add.sprite(100, window.innerHeight - 100, 'character');
+    this.player = this.physics.add.sprite(100, window.innerHeight - 100, 'standing');
+    
+    // Scale down the NPC
+    this.player.setScale(0.15); // Adjust this value to make it smaller or larger as needed
     this.player.setCollideWorldBounds(true);
     this.player.setBounce(0.1);
     this.physics.add.collider(this.player, this.ground);
@@ -122,30 +125,38 @@ export default class GameScene extends Phaser.Scene {
     checkPointer(pointer1);
     checkPointer(pointer2);
 
-    if (left) {
-      this.player.setVelocityX(-200);
-      this.player.anims.play('run', true);
-      this.player.setFlipX(true);
-    } else if (right) {
-      this.player.setVelocityX(200);
-      this.player.anims.play('run', true);
-      this.player.setFlipX(false);
+    if (this.player.body?.touching.down) {
+      if (left) {
+        this.player.setVelocityX(-200);
+        this.player.setTexture('running');
+        this.player.setFlipX(true);
+      } else if (right) {
+        this.player.setVelocityX(200);
+        this.player.setTexture('running');
+        this.player.setFlipX(false);
+      } else {
+        this.player.setVelocityX(0);
+        this.player.setTexture('standing');
+      }
     } else {
-      this.player.setVelocityX(0);
-      this.player.anims.play('idle', true);
+      if (left) {
+        this.player.setVelocityX(-200);
+        this.player.setFlipX(true);
+      } else if (right) {
+        this.player.setVelocityX(200);
+        this.player.setFlipX(false);
+      } else {
+        this.player.setVelocityX(0);
+      }
     }
 
     if (up && this.player.body?.touching.down) {
       this.player.setVelocityY(-500);
-      this.player.anims.play('jump', true);
+      this.player.setTexture('jumping');
       
       // Jump dust
       this.createParticles(this.player.x, this.player.y + 16, 0xffffff);
       playSound('jump');
-    }
-    
-    if (!this.player.body?.touching.down) {
-       this.player.anims.play('jump', true);
     }
   }
 
@@ -199,7 +210,6 @@ export default class GameScene extends Phaser.Scene {
   private triggerEnding() {
     this.isEnding = true;
     this.player.setVelocityX(0);
-    this.player.anims.play('idle');
     playSound('win');
     
     // Slow Zoom

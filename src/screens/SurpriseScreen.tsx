@@ -89,6 +89,11 @@ May this year be everything you've ever hoped for and more.
               💖
             </motion.div>
 
+            <div className="flex justify-center items-center gap-4 mb-6">
+              <img src="/letter.png" alt="letter" className="w-24 h-24" />
+              <img src="/happy.png" alt="happy" className="w-24 h-24" />
+            </div>
+
             <motion.p 
               className="font-handwriting text-xl md:text-3xl text-slate-700 leading-relaxed whitespace-pre-wrap max-h-[70vh] overflow-y-auto pr-2"
               initial={{ opacity: 0 }}
