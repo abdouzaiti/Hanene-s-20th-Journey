@@ -43,7 +43,7 @@ export default class GameScene extends Phaser.Scene {
     for(let i=1; i<20; i++) {
         if(i % 2 === 0) continue;
         const x = i * 200;
-        const y = window.innerHeight - 150 - Phaser.Math.Between(0, 100);
+        const y = window.innerHeight - 80 - Phaser.Math.Between(0, 50);
         this.ground.create(x, y, 'ground');
         this.ground.create(x + 100, y, 'ground');
     }
@@ -60,7 +60,7 @@ export default class GameScene extends Phaser.Scene {
     // Spread exactly 20 cakes
     for (let i = 0; i < 20; i++) {
       const x = 300 + (i * 180);
-      const y = window.innerHeight - 300;
+      const y = window.innerHeight - 180 - Phaser.Math.Between(0, 40);
       const cake = this.cakes.create(x, y, 'cake');
       cake.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
       
