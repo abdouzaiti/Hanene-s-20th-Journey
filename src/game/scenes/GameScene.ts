@@ -123,11 +123,12 @@ export default class GameScene extends Phaser.Scene {
     const pointer1 = this.input.pointer1;
     const pointer2 = this.input.pointer2;
     const width = this.cameras.main.width;
+    const height = this.cameras.main.height;
 
     const checkPointer = (pointer: Phaser.Input.Pointer) => {
-        if (pointer.isDown) {
-            if (pointer.x < width * 0.3) left = true;
-            else if (pointer.x > width * 0.3 && pointer.x < width * 0.7) right = true;
+        if (pointer.isDown && pointer.y > height * 0.6) {
+            if (pointer.x < width * 0.25) left = true;
+            else if (pointer.x > width * 0.25 && pointer.x < width * 0.5) right = true;
             else if (pointer.x > width * 0.7) up = true;
         }
     };
