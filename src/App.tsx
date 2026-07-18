@@ -3,6 +3,7 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
+import { ReactNode } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation, Navigate } from 'react-router';
 import { AnimatePresence, motion } from 'motion/react';
 import MusicPlayer from './components/MusicPlayer';
@@ -14,12 +15,14 @@ import GameScreen from './screens/GameScreen';
 import CongratulationsScreen from './screens/CongratulationsScreen';
 import SurpriseScreen from './screens/SurpriseScreen';
 
+const AnimatedRoutesContainer = Routes as any;
+
 function AnimatedRoutes() {
   const location = useLocation();
 
   return (
     <AnimatePresence mode="wait">
-      <Routes location={location} key={location.pathname}>
+      <AnimatedRoutesContainer location={location} key={location.pathname}>
         <Route path="/" element={
           <PageTransition>
             <SplashScreen />
@@ -46,12 +49,12 @@ function AnimatedRoutes() {
           </PageTransition>
         } />
         <Route path="*" element={<Navigate to="/" replace />} />
-      </Routes>
+      </AnimatedRoutesContainer>
     </AnimatePresence>
   );
 }
 
-function PageTransition({ children }: { children: React.ReactNode }) {
+function PageTransition({ children }: { children: ReactNode }) {
   return (
     <motion.div
       initial={{ opacity: 0, filter: 'blur(10px)' }}

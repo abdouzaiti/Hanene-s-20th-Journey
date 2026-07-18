@@ -23,7 +23,7 @@ export default class GameScene extends Phaser.Scene {
     this.isEnding = false;
 
     // Create World
-    this.physics.world.setBounds(0, 0, 4000, window.innerHeight);
+    this.physics.world.setBounds(0, 0, 4000, this.scale.height);
 
     // Background Parallax Clouds
     this.clouds = this.add.group();
@@ -36,28 +36,32 @@ export default class GameScene extends Phaser.Scene {
     }
 
     // Ground
+    this.physics.world.TILE_BIAS = 40;
     this.ground = this.physics.add.staticGroup();
     for (let i = 0; i < 40; i++) {
-      this.ground.create(i * 100 + 50, window.innerHeight - 20, 'ground').setScale(1).refreshBody();
+      this.ground.create(i * 100 + 50, this.scale.height - 20, 'ground').setScale(1).refreshBody();
     }
     // Add some elevated platforms
     for(let i=1; i<20; i++) {
         if(i % 2 === 0) continue;
         const x = i * 200;
-        const y = window.innerHeight - 80 - Phaser.Math.Between(0, 50);
-        this.ground.create(x, y, 'ground');
-        this.ground.create(x + 100, y, 'ground');
+        const y = this.scale.height - 80 - Phaser.Math.Between(0, 50);
+        this.ground.create(x, y, 'ground').setScale(1).refreshBody();
+        this.ground.create(x + 100, y, 'ground').setScale(1).refreshBody();
     }
 
     // Player
-    this.player = this.physics.add.sprite(100, window.innerHeight - 100, 'standing');
+    this.player = this.physics.add.sprite(100, this.scale.height - 100, 'standing');
     
     // Abdou
-    this.abdou = this.add.image(3800, window.innerHeight - 80, 'abdou');
+    this.abdou = this.add.image(3800, this.scale.height - 80, 'abdou');
     this.abdou.setScale(0.13);
     
     // Scale down the NPC
     this.player.setScale(0.15); // Adjust this value to make it smaller or larger as needed
+    // Set body size to prevent sinking/sticking
+    const playerBody = this.player.body as Phaser.Physics.Arcade.Body;
+    playerBody.setSize(this.player.width * 0.6, this.player.height * 0.9, true);
     this.player.setCollideWorldBounds(true);
     this.player.setBounce(0.1);
     this.physics.add.collider(this.player, this.ground);
@@ -68,7 +72,7 @@ export default class GameScene extends Phaser.Scene {
     // Spread exactly 20 cakes
     for (let i = 0; i < 20; i++) {
       const x = 300 + (i * 180);
-      const y = window.innerHeight - 180 - Phaser.Math.Between(0, 40);
+      const y = this.scale.height - 180 - Phaser.Math.Between(0, 40);
       const cake = this.cakes.create(x, y, 'cake');
       cake.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));
       
@@ -102,7 +106,7 @@ export default class GameScene extends Phaser.Scene {
 
 
     // Camera
-    this.cameras.main.setBounds(0, 0, 4000, window.innerHeight);
+    this.cameras.main.setBounds(0, 0, 4000, this.scale.height);
     this.cameras.main.setZoom(0.7);
     this.cameras.main.startFollow(this.player, true, 0.05, 0.05);
 
@@ -136,18 +140,20 @@ export default class GameScene extends Phaser.Scene {
     checkPointer(pointer1);
     checkPointer(pointer2);
 
-    if (this.player.body?.touching.down) {
+    const isOnGround = this.player.body?.touching.down || this.player.body?.blocked.down;
+
+    if (isOnGround) {
       if (left) {
         this.player.setVelocityX(-200);
-        this.player.setTexture('running');
+        this.setPlayerTexture('running');
         this.player.setFlipX(true);
       } else if (right) {
         this.player.setVelocityX(200);
-        this.player.setTexture('running');
+        this.setPlayerTexture('running');
         this.player.setFlipX(false);
       } else {
         this.player.setVelocityX(0);
-        this.player.setTexture('standing');
+        this.setPlayerTexture('standing');
       }
     } else {
       if (left) {
@@ -161,9 +167,9 @@ export default class GameScene extends Phaser.Scene {
       }
     }
 
-    if (up && this.player.body?.touching.down) {
+    if (up && isOnGround) {
       this.player.setVelocityY(-500);
-      this.player.setTexture('jumping');
+      this.setPlayerTexture('jumping');
       
       // Jump dust
       this.createParticles(this.player.x, this.player.y + 16, 0xffffff);
@@ -221,7 +227,7 @@ export default class GameScene extends Phaser.Scene {
   private triggerEnding() {
     this.isEnding = true;
     this.player.setVelocityX(0);
-    this.player.setTexture('running');
+    this.setPlayerTexture('running');
 
     // Walk to Abdou
     this.tweens.add({
@@ -229,7 +235,7 @@ export default class GameScene extends Phaser.Scene {
       x: this.abdou.x - 60,
       duration: 1500,
       onComplete: () => {
-        this.player.setTexture('standing');
+        this.setPlayerTexture('standing');
         this.player.setFlipX(false);
         this.abdou.setTexture('happyabdou');
         
@@ -293,5 +299,14 @@ export default class GameScene extends Phaser.Scene {
     setTimeout(() => {
       EventBus.emit('game-win');
     }, 3500);
+  }
+
+  private setPlayerTexture(key: string) {
+    if (this.player.texture.key === key) return;
+    this.player.setTexture(key);
+    const body = this.player.body as Phaser.Physics.Arcade.Body;
+    if (body) {
+      body.setSize(this.player.width * 0.6, this.player.height * 0.9, true);
+    }
   }
 }
