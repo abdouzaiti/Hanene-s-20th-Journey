@@ -66,7 +66,7 @@ export default function GameScreen() {
         </div>
       </div>
 
-      <div className="absolute bottom-0 w-full h-32 bg-amber-900 z-10 md:hidden flex justify-between px-8 items-center">
+      <div className="absolute bottom-0 w-full h-56 bg-amber-900 z-10 md:hidden flex justify-between px-8 items-center">
         <div className="flex gap-4 pointer-events-auto">
           <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center text-white font-bold text-xl backdrop-blur-sm">←</div>
           <div className="w-16 h-16 rounded-full bg-white/20 flex items-center justify-center text-white font-bold text-xl backdrop-blur-sm">→</div>
