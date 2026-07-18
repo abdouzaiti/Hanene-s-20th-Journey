@@ -11,7 +11,7 @@ export default function WelcomeScreen() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen relative z-10 px-4">
+    <div className="flex flex-col items-center justify-center h-full w-full relative z-10 px-4">
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-pink-100/50 via-white/20 to-transparent pointer-events-none" />
       
       <motion.div 

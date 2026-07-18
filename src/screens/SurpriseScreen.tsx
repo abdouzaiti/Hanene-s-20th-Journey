@@ -36,7 +36,7 @@ May this year be everything you've ever hoped for and more.
 ❤️ Made with love, especially for Hanene ❤️`;
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen relative z-10 px-4">
+    <div className="flex flex-col items-center justify-center h-full w-full relative z-10 px-4">
       <AnimatePresence>
         {!showLetter && (
           <motion.div

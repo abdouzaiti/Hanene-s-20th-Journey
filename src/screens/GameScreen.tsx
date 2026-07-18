@@ -44,7 +44,7 @@ export default function GameScreen() {
   }, [navigate]);
 
   return (
-    <div className="relative w-full h-screen bg-[#87CEEB] overflow-hidden">
+    <div className="relative w-full h-full bg-[#87CEEB] overflow-hidden">
       {/* Game Container */}
       <div id="phaser-container" className="absolute inset-0 z-0" />
 

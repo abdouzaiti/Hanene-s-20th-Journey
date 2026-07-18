@@ -37,7 +37,7 @@ export default function CongratulationsScreen() {
   }, []);
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen relative z-10 px-4 text-center">
+    <div className="flex flex-col items-center justify-center h-full w-full relative z-10 px-4 text-center">
       <motion.div
         className="flex flex-col items-center justify-center text-center px-4 max-w-4xl"
         initial={{ scale: 0.8, opacity: 0 }}

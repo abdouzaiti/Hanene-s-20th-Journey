@@ -61,7 +61,7 @@ function PageTransition({ children }: { children: ReactNode }) {
       animate={{ opacity: 1, filter: 'blur(0px)' }}
       exit={{ opacity: 0, filter: 'blur(10px)' }}
       transition={{ duration: 0.8, ease: "easeInOut" }}
-      className="w-full h-full min-h-screen"
+      className="w-full h-full"
     >
       {children}
     </motion.div>
@@ -71,7 +71,7 @@ function PageTransition({ children }: { children: ReactNode }) {
 export default function App() {
   return (
     <Router>
-      <div className="relative min-h-screen w-full overflow-hidden bg-gradient-to-br from-[#FFF0F5] via-[#FFE4E1] to-[#F5F5F5] text-slate-800">
+      <div className="relative w-full h-full overflow-hidden bg-gradient-to-br from-[#FFF0F5] via-[#FFE4E1] to-[#F5F5F5] text-slate-800">
         <Particles />
         <AnimatedRoutes />
         <MusicPlayer />
