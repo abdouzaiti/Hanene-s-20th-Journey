@@ -257,7 +257,8 @@ export default class GameScene extends Phaser.Scene {
                 this.abdou.setTexture('finish2');
                 
                 // Camera Zoom & Pan to Abdou
-                this.cameras.main.pan(this.abdou.x + 50, this.abdou.y, 1000);
+                this.cameras.main.stopFollow();
+                this.cameras.main.pan(this.abdou.x, this.abdou.y, 1000);
                 this.cameras.main.zoomTo(3, 1000); // Zoom in significantly
                 
                 // Wait 3s then win
