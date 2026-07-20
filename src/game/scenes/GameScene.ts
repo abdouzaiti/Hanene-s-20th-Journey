@@ -240,35 +240,37 @@ export default class GameScene extends Phaser.Scene {
         this.abdou.setTexture('happyabdou');
         
         // After 1s, show finish1
-        setTimeout(() => {
+        this.time.delayedCall(1000, () => {
           this.abdou.setTexture('finish1');
           this.player.setVisible(false);
           
           // Wait 2s, then turn to finish2
-          setTimeout(() => {
+          this.time.delayedCall(2000, () => {
             this.abdou.setTexture('finish2');
             
             // Wait 1s, then turn back to finish1
-            setTimeout(() => {
+            this.time.delayedCall(1000, () => {
               this.abdou.setTexture('finish1');
               
               // Wait 1s, then turn back to finish2
-              setTimeout(() => {
+              this.time.delayedCall(1000, () => {
                 this.abdou.setTexture('finish2');
                 
                 // Camera Zoom & Pan to Abdou
                 this.cameras.main.stopFollow();
+                // Pan specifically to the center of Abdou. Abdou is at 3800.
+                // If it was panning too far, we might need to offset the target based on zoom.
                 this.cameras.main.pan(this.abdou.x, this.abdou.y, 1000);
-                this.cameras.main.zoomTo(3, 1000); // Zoom in significantly
+                this.cameras.main.zoomTo(3, 1000); 
                 
                 // Wait 3s then win
-                setTimeout(() => {
+                this.time.delayedCall(3000, () => {
                     this.finishGame();
-                }, 3000);
-              }, 1000); // 1s delay
-            }, 1000); // 1s delay
-          }, 2000); // 2s delay
-        }, 1000); // 1s delay
+                });
+              });
+            });
+          });
+        });
       }
     });
 
