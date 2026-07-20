@@ -33,7 +33,7 @@ Always remember how incredibly loved you are. Keep shining your beautiful light,
 
 May this year be everything you've ever hoped for and more.
 
-❤️ Made with love, especially for Hanene ❤️`;
+❤️ Made with love ❤️`;
 
   return (
     <div className="flex flex-col items-center justify-center h-full w-full relative z-10 px-4">
