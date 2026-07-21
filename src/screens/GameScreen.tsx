@@ -11,10 +11,26 @@ export default function GameScreen() {
   const [isMilestone, setIsMilestone] = useState(false);
 
   useEffect(() => {
-    // Initialize game
-    if (!gameRef.current) {
-      gameRef.current = initGame('phaser-container');
-    }
+    let active = true;
+    let phaserInstance: Phaser.Game | null = null;
+
+    // Small delay to allow any previous instance to finish destroying
+    const initTimer = setTimeout(() => {
+      if (!active) return;
+
+      const container = document.getElementById('phaser-container');
+      if (!container) return;
+
+      // Clear any leftover elements (like old canvases)
+      container.innerHTML = '';
+
+      try {
+        phaserInstance = initGame('phaser-container');
+        gameRef.current = phaserInstance;
+      } catch (err) {
+        console.error("Failed to initialize Phaser:", err);
+      }
+    }, 150);
 
     const handleAgeUpdate = (newAge: number) => {
       setAge(newAge);
@@ -34,11 +50,16 @@ export default function GameScreen() {
     EventBus.on('game-win', handleGameWin);
 
     return () => {
+      active = false;
+      clearTimeout(initTimer);
       EventBus.off('age-updated', handleAgeUpdate);
       EventBus.off('game-win', handleGameWin);
-      if (gameRef.current) {
-        gameRef.current.destroy(true);
-        gameRef.current = null;
+      
+      if (phaserInstance) {
+        phaserInstance.destroy(true);
+        if (gameRef.current === phaserInstance) {
+          gameRef.current = null;
+        }
       }
     };
   }, [navigate]);
