@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { motion } from 'motion/react';
 import { useNavigate } from 'react-router';
 import confetti from 'canvas-confetti';
+import { Balloons } from '../components/Balloons';
 
 export default function CongratulationsScreen() {
   const navigate = useNavigate();
@@ -38,6 +39,7 @@ export default function CongratulationsScreen() {
 
   return (
     <div className="flex flex-col items-center justify-center h-full w-full relative z-10 px-4 text-center">
+      <Balloons type="default" />
       <motion.div
         className="flex flex-col items-center justify-center text-center px-4 max-w-4xl"
         initial={{ scale: 0.8, opacity: 0 }}
